@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import Form from '../components/Form';
 import Result from '../components/Result';
 
@@ -77,15 +76,18 @@ export default function Home() {
   }, [values]);
 
   return (
-    <div className={styles.container}>
+    <div className="container mx-auto px-4 flex flex-wrap">
       <Head>
         <title>Walk - Run Pace calculator</title>
         <link rel="icon" href="/stopwatch.png" />
       </Head>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Walk - Run pace calculator</h1>
-        <p>
-          Determine how fast you need to run to make a certain time based on
+      <main className="max-w-md mx-auto pt-9">
+        <h1 className="text-2xl font-bold font-serif mb-3">
+          <img src="/stopwatch.png" className="w-8 mr-2 inline" alt="" />
+          Walk - Run Pace Calculator
+        </h1>
+        <p className="text-base mb-3">
+          Determine how fast you need to run to make a goal time based on
           your distance and number of walk breaks.
         </p>
         <Form values={values} setValues={setValues} />

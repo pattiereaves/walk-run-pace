@@ -3,7 +3,7 @@ import { convert as paceConverter } from 'pace-converter';
 import { Calculations } from '../../pages';
 
 export type Props = {
-  calculations?: Calculations;
+  calculations: Calculations|false;
 }
 
 export default function Result({

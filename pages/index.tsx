@@ -49,7 +49,7 @@ export default function Home() {
     },
   });
 
-  const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
+  const [calculations, setCalculations] = React.useState<Calculations|false>(false);
 
   const walkPace = 16;
 

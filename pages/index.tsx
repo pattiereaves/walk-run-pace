@@ -2,40 +2,7 @@ import * as React from 'react';
 import Head from 'next/head'
 import Form from '../components/Form';
 import Result from '../components/Result';
-
-export type Values = {
-  event: {
-    /** Distance in miles. */
-    distance: number;
-    /** Duration in seconds. */
-    duration: number;
-  },
-  intervalDuration: {
-    /** Duration in seconds. */
-    run: number;
-    /** Duration in seconds. */
-    walk: number;
-  };
-};
-
-export type Calculations = {
-  /** Distance for interval by duration. */
-  distance: {
-    /** Interval distance in miles. */
-    run: number;
-    /** Interval distance in miles. */
-    walk: number;
-  };
-  /** Number of run-walk intervals */
-  intervals: number;
-  /** Paces by intensity. */
-  pace: {
-    /** Minutes per mile for running interval. */
-    run: number;
-    /** Minutes per mile for walking interval. */
-    walk: number;
-  };
-};
+import { Values, Calculations } from '../types';
 
 export default function Home() {
   const [values, setValues] = React.useState<Values>({
@@ -49,7 +16,7 @@ export default function Home() {
     },
   });
 
-  const [calculations, setCalculations] = React.useState<Calculations|false>(false);
+  const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
 
   const walkPace = 16;
 
@@ -94,5 +61,5 @@ export default function Home() {
         <Result calculations={calculations} />
       </main>
     </div>
-  )
+  );
 }

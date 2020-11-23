@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Values } from '../../pages';
+import { Values } from '../../types';
 
 export type Props = {
   values: Values;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { convert as paceConverter } from 'pace-converter';
-import { Calculations } from '../../pages';
+import { Calculations } from '../../types';
 
 export type Props = {
-  calculations: Calculations|false;
+  calculations?: Calculations;
 }
 
 export default function Result({

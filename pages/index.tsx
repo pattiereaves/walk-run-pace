@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import qs from 'query-string';
 import flat from 'flat';
@@ -22,8 +21,6 @@ export default function Home() {
   const [values, setValues] = React.useState<Values>(defaultValues);
 
   const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
-
-  const router = useRouter();
 
   const walkPace = 16;
 

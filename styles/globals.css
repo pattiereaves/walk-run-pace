@@ -6,10 +6,12 @@
 
 html,
 body {
-  @apply bg-gray-100;
   @apply leading-loose;
-  padding: 0;
+  background-image: linear-gradient(10deg, rgba(2,0,36,1) 0%, rgba(121,69,9,1) 18%, rgba(0,212,255,1) 100%);
+  background-repeat: no-repeat;
+  height: 100%;
   margin: 0;
+  padding: 0;
 }
 
 a {
@@ -21,11 +23,26 @@ a {
   box-sizing: border-box;
 }
 
-input, select {
-  @apply text-lg border-solid border-gray-800 border-2 mx-1 px-2 mb-2;
-  height: 2rem;
+legend {
+  padding: 0;
+  display: table;
 }
 
-label {
-  @apply text-lg ml-1 w-36 inline-block;
+fieldset {
+  border: 0;
+  padding: 0.01em 0 0 0;
+  margin: 0;
+  min-width: 0;
+}
+
+body:not(:-moz-handler-blocked) fieldset {
+  display: table-cell;
+}
+
+input, select {
+  @apply text-xl h-12 border-solid border-gray-800 border-2 mr-1 px-2 mb-2;
+}
+
+.label {
+  @apply text-xl font-serif;
 }

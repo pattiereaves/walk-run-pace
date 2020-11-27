@@ -1,5 +1,10 @@
 import * as React from 'react';
+import { useRouter } from 'next/router';
+import qs from 'query-string';
+import flat from 'flat';
 import { Values } from '../../types';
+import TimeField from '../TimeField';
+import styles from './form.module.css';
 
 export type Props = {
   values: Values;
@@ -10,100 +15,90 @@ export default function Form({
   values,
   setValues,
 }: Props) {
+  const router = useRouter();
 
   const handleDistance = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newValues = {...values};
     newValues.event.distance = +event.target.value;
     setValues(newValues);
+    router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
   };
 
-  const handlePace = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDuration = (time: number) => {
     const newValues = {...values};
-    newValues.event.duration = +event.target.value;
+    newValues.event.duration = time;
     setValues(newValues);
+    router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
   };
 
-  const handleRunInterval = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRunInterval = (time: number) => {
     const newValues = {...values};
-    newValues.intervalDuration.run = +event.target.value;
+    newValues.intervalDuration.run = time;
     setValues(newValues);
+    router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
   };
 
-  const handleWalkDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleWalkDuration = (time: number) => {
     const newValues = {...values};
-    newValues.intervalDuration.walk = +event.target.value;
+    newValues.intervalDuration.walk = time;
     setValues(newValues);
+    router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
   }
 
   return (
-    <form className="border-double border-4 border-gray-500 p-4 mb-4 md:-mx-16">
-      <fieldset className="mb-2">
-        <div className="block mb-1">
-          <legend className="font-serif mb-3 font-bold border-b-2 block w-full">
-            Event details
-          </legend>
-          <label htmlFor="event-distance">Event</label>
-          <select
-            name="event-distance"
-            id="event-distance"
-            required
-            value={values.event.distance}
-            onChange={handleDistance}
-          >
-            <option value="3.10686">5k</option>
-            <option value="6.21371">10k</option>
-            <option value="13.1">Half Marathon</option>
-            <option value="26.2">Marathon</option>
-            <option value="31.0686">50k</option>
-            <option value="50">50 miles</option>
-          </select>
+    <form className="block border-double rounded-lg border-4 border-white p-2 mb-4 md:-mx-16">
+      <fieldset className="max-w-full flex flex-nowrap align-middle">
+        <legend className="text-base font-serif mb-3 font-bold border-b-2 block w-full">
+          Event details
+        </legend>
+        <div className="block mb-1 mr-2 flex-grow">
+          <div className="flex flex-col">
+            <label className="text-2xl flex-shrink" htmlFor="event-distance">
+              Distance
+            </label>
+            <select
+              className="flex-grow"
+              name="event-distance"
+              id="event-distance"
+              required
+              value={values.event.distance}
+              onChange={handleDistance}
+            >
+              <option value="3.10686">5k</option>
+              <option value="6.21371">10k</option>
+              <option value="13.1">Half Marathon</option>
+              <option value="26.2">Marathon</option>
+              <option value="31.0686">50k</option>
+              <option value="50">50 miles</option>
+            </select>
+          </div>
         </div>
-        <div className="block mb-1">
-          <label htmlFor="event-pace">Event goal</label>
-          <input
-            type="text"
-            id="event-pace"
-            required
-            onChange={handlePace}
-            value={values.event.duration}
-          />
-          <span>
-            minutes
-          </span>
+        <div className={styles['goal-time']}>
+          <TimeField time={values.event.duration} setTime={handleDuration} legend="Goal time" />
         </div>
       </fieldset>
-      <fieldset className="mb-4">
-        <legend className="font-serif mb-3 font-bold border-b-2 block w-full">Intervals</legend>
-        <div>
-          <label htmlFor="run-duration">
-            Run duration
-          </label>
-          <input
-            type="number"
-            name="run-duration"
-            id="run-intervals"
-            onChange={handleRunInterval}
-            value={values.intervalDuration.run}
+      <fieldset className="flex flex-wrap justify-around">
+        <legend className="text-base font-serif mb-3 font-bold border-b-2 block w-full">
+          Intervals
+        </legend>
+        <div className={styles['intervals']}>
+          <TimeField
+            time={values.intervalDuration.run}
+            setTime={handleRunInterval}
+            legend="🏃‍♀️ Run"
+            showHours={false}
           />
-          <span>minutes</span>
         </div>
-        <div>
-          <div>
-            <label htmlFor="walk-duration">
-              Walk duration
-            </label>
-            <input
-              type="number"
-              id="walk-duration"
-              required
-              onChange={handleWalkDuration}
-              value={values.intervalDuration.walk}
-            />
-            <span>minutes</span>
-            <div className="text-sm italic">
-              Walk pace assumes to 16:00 per mile.
-            </div>
-          </div>
+        <div className={styles['intervals']}>
+          <TimeField
+            time={values.intervalDuration.walk}
+            setTime={handleWalkDuration}
+            showHours={false}
+            legend="🚶‍♀️ Walk"
+          />
+        </div>
+        <div className="text-center block w-full flex-grow-1 text-base italic">
+          Walk pace assumes 16:00 per mile.
         </div>
       </fieldset>
     </form>

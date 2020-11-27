@@ -1,0 +1,15 @@
+.goal-time legend {
+  @apply text-2xl;
+}
+
+.goal-time input {
+  @apply text-2xl h-12;
+}
+
+.intervals {
+  @apply inline-flex align-middle flex-nowrap;
+}
+
+.intervals legend {
+  @apply text-xl;
+}

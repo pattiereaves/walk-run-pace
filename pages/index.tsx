@@ -65,11 +65,11 @@ export default function Home() {
     <div className="container mx-auto px-4 flex flex-wrap">
       <Head>
         <title>Walk - Run Pace calculator</title>
-        <link rel="icon" href="/stopwatch.png" />
+        <link rel="icon" href="stopwatch.png" />
       </Head>
       <main className="block max-w-md mx-auto pt-9">
         <h1 className="text-center text-2xl font-bold font-serif mb-3">
-          <img src="/stopwatch.png" className="w-8 mr-2 inline" alt="" />
+          <img src="stopwatch.png" className="w-8 mr-2 inline" alt="" />
           Walk - Run Pace Calculator
         </h1>
         <Form values={values} setValues={setValues} />

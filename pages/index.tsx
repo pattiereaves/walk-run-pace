@@ -50,12 +50,11 @@ export default function Home({
     }
   }, []);
 
-  React.useEffect(function updateUrl() {
-    if (JSON.stringify(values) !== JSON.stringify(query)) {
-      console.log('update url', { values, query});
-      router.replace({ query: flat(values) }, undefined, { shallow: true } );
-    }
-  }, [values]);
+  // React.useEffect(function updateUrl() {
+  //   if (JSON.stringify(values) !== JSON.stringify(query)) {
+  //     router.replace({ query: flat(values) }, undefined, { shallow: true } );
+  //   }
+  // }, [values]);
 
   React.useEffect(() => {
     const { distance, duration } = values.event;
@@ -97,4 +96,4 @@ export default function Home({
   );
 }
 
-Home.getInitialProps = ({ query }) => ({ query });
+Home.getInitialProps = ({ query }: { query: any }) => ({ query });

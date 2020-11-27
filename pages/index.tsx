@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import qs from 'query-string';
 import flat from 'flat';
 import Form from '../components/Form';
@@ -16,18 +17,19 @@ const defaultValues = {
     walk: 1,
   },
 };
+const walkPace = 20;
 
-export default function Home() {
+export default function Home({
+  query,
+}: { query: any; }) {
   const [values, setValues] = React.useState<Values>(defaultValues);
-
   const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
-
-  const walkPace = 20;
+  const router = useRouter();
 
   React.useEffect(function buildValuesFromQueryString() {
     const queryValues = flat.unflatten(
-      qs.parse(location.search, { parseNumbers: true })
-    ) as unknown as Values;
+      qs.parse(query, { parseNumbers: true })
+    ) as unknown as any;
 
     // If there are query values
     if (Object.keys(queryValues).length > 0) {
@@ -47,6 +49,13 @@ export default function Home() {
       }
     }
   }, []);
+
+  React.useEffect(function updateUrl() {
+    if (JSON.stringify(values) !== JSON.stringify(query)) {
+      console.log('update url', { values, query});
+      router.replace({ query: flat(values) }, undefined, { shallow: true } );
+    }
+  }, [values]);
 
   React.useEffect(() => {
     const { distance, duration } = values.event;
@@ -87,3 +96,5 @@ export default function Home() {
     </div>
   );
 }
+
+Home.getInitialProps = ({ query }) => ({ query });

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useRouter } from 'next/router';
-import flat from 'flat';
 import { Values } from '../../types';
 import TimeField from '../TimeField';
 import styles from './form.module.css';
@@ -14,37 +12,28 @@ export default function Form({
   values,
   setValues,
 }: Props) {
-  const router = useRouter();
-  const updateURL = (withValues: Values) => {
-    router.replace({ query: flat(withValues) }, undefined, { shallow: true } );
-  }
-
   const handleDistance = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newValues = {...values};
     newValues.event.distance = +event.target.value;
     setValues(newValues);
-    updateURL(newValues);
   };
 
   const handleDuration = (time: number) => {
     const newValues = {...values};
     newValues.event.duration = time;
     setValues(newValues);
-    updateURL(newValues);
   };
 
   const handleRunInterval = (time: number) => {
     const newValues = {...values};
     newValues.intervalDuration.run = time;
     setValues(newValues);
-    updateURL(newValues);
   };
 
   const handleWalkDuration = (time: number) => {
     const newValues = {...values};
     newValues.intervalDuration.walk = time;
     setValues(newValues);
-    updateURL(newValues);
   }
 
   return (

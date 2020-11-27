@@ -24,17 +24,29 @@ export default function Home() {
 
   const walkPace = 16;
 
-  // React.useEffect(function buildValuesFromQueryString() {
-  //   const queryValues = flat.unflatten(
-  //     qs.parse(location.search, { parseNumbers: true })
-  //   ) as unknown as Values;
-  //   if (Object.keys(queryValues).length > 0) {
-  //     if (JSON.stringify(queryValues) !== JSON.stringify(values)) {
-  //       // Set values to numbers.
-  //       setValues(queryValues);
-  //     }
-  //   }
-  // }, []);
+  React.useEffect(function buildValuesFromQueryString() {
+    const queryValues = flat.unflatten(
+      qs.parse(location.search, { parseNumbers: true })
+    ) as unknown as Values;
+
+    // If there are query values
+    if (Object.keys(queryValues).length > 0) {
+      // And those query values do not match the current values.
+      if (JSON.stringify(queryValues) !== JSON.stringify(values)) {
+        // Set values to numbers.
+        setValues({
+          event: {
+            distance: queryValues?.event?.distance || values.event.distance,
+            duration: queryValues?.event?.duration || values.event.duration,
+          },
+          intervalDuration: {
+            run: queryValues?.intervalDuration?.run || values.intervalDuration.run,
+            walk: queryValues?.intervalDuration?.walk || values.intervalDuration.walk,
+          }
+        });
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     const { distance, duration } = values.event;

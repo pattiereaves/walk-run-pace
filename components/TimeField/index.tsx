@@ -42,8 +42,6 @@ const TimeField = ({
   React.useEffect(setTimeInMinutes, [unitsOfTime]);
 
   React.useEffect(function passTimeUpdateToProps() {
-    const { hours, minutes, seconds } = unitsOfTime;
-
     // Convert the values into sub-units.
     const newUnitsOfTime = {
       hours: minutesToHours(time),

@@ -22,7 +22,7 @@ export default function Home() {
 
   const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
 
-  const walkPace = 16;
+  const walkPace = 20;
 
   React.useEffect(function buildValuesFromQueryString() {
     const queryValues = flat.unflatten(

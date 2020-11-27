@@ -1,7 +1,6 @@
 import * as React from 'react';
-// import { useRouter } from 'next/router';
-// import qs from 'query-string';
-// import flat from 'flat';
+import { useRouter } from 'next/router';
+import flat from 'flat';
 import { Values } from '../../types';
 import TimeField from '../TimeField';
 import styles from './form.module.css';
@@ -15,34 +14,37 @@ export default function Form({
   values,
   setValues,
 }: Props) {
-  // const router = useRouter();
+  const router = useRouter();
+  const updateURL = (withValues: Values) => {
+    router.replace({ query: flat(withValues) }, undefined, { shallow: true } );
+  }
 
   const handleDistance = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newValues = {...values};
     newValues.event.distance = +event.target.value;
     setValues(newValues);
-    // router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
+    updateURL(newValues);
   };
 
   const handleDuration = (time: number) => {
     const newValues = {...values};
     newValues.event.duration = time;
     setValues(newValues);
-    // router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
+    updateURL(newValues);
   };
 
   const handleRunInterval = (time: number) => {
     const newValues = {...values};
     newValues.intervalDuration.run = time;
     setValues(newValues);
-    // router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
+    updateURL(newValues);
   };
 
   const handleWalkDuration = (time: number) => {
     const newValues = {...values};
     newValues.intervalDuration.walk = time;
     setValues(newValues);
-    // router.push(`?${qs.stringify(flat(newValues))}`, undefined, { shallow: true } );
+    updateURL(newValues);
   }
 
   return (
@@ -98,7 +100,7 @@ export default function Form({
           />
         </div>
         <div className="text-center block w-full flex-grow-1 text-base italic">
-          Walk pace assumes 16:00 per mile.
+          Walk pace assumes 20:00 per mile.
         </div>
       </fieldset>
     </form>

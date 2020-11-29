@@ -19,44 +19,55 @@ const defaultValues = {
 };
 const walkPace = 20;
 
-export default function Home({
-  query,
-}: { query: any; }) {
-  const [values, setValues] = React.useState<Values>(defaultValues);
+export default function Home() {
+  const [values, setValues] = React.useState<Values|undefined>(undefined);
   const [calculations, setCalculations] = React.useState<Calculations|undefined>(undefined);
+  const [isUpdating, setIsUpdating] = React.useState(true);
   const router = useRouter();
 
   React.useEffect(function buildValuesFromQueryString() {
     const queryValues = flat.unflatten(
-      qs.parse(query, { parseNumbers: true })
+      qs.parse(location.search, { parseNumbers: true })
     ) as unknown as any;
 
     // If there are query values
     if (Object.keys(queryValues).length > 0) {
-      // And those query values do not match the current values.
-      if (JSON.stringify(queryValues) !== JSON.stringify(values)) {
-        // Set values to numbers.
-        setValues({
-          event: {
-            distance: queryValues?.event?.distance || values.event.distance,
-            duration: queryValues?.event?.duration || values.event.duration,
-          },
-          intervalDuration: {
-            run: queryValues?.intervalDuration?.run || values.intervalDuration.run,
-            walk: queryValues?.intervalDuration?.walk || values.intervalDuration.walk,
-          }
-        });
-      }
+      // Set values to numbers.
+      setValues({
+        event: {
+          distance: queryValues?.event?.distance,
+          duration: queryValues?.event?.duration,
+        },
+        intervalDuration: {
+          run: queryValues?.intervalDuration?.run,
+          walk: queryValues?.intervalDuration?.walk,
+        }
+      });
+    } else {
+      setValues(defaultValues);
     }
   }, []);
 
-  // React.useEffect(function updateUrl() {
-  //   if (JSON.stringify(values) !== JSON.stringify(query)) {
-  //     router.replace({ query: flat(values) }, undefined, { shallow: true } );
-  //   }
-  // }, [values]);
+  React.useEffect(function updateUrl() {
+    if (!isUpdating) {
+      setIsUpdating(true);
+      const queryValues = flat.unflatten(
+        qs.parse(location.search, { parseNumbers: true })
+      ) as unknown as any;
+
+      if (JSON.stringify(values) !== JSON.stringify(queryValues)) {
+        router.push({ query: flat(values) }, undefined, { shallow: true } );
+      }
+    } else {
+      setIsUpdating(false);
+    }
+  }, [values]);
 
   React.useEffect(() => {
+    if (!values) {
+      return;
+    }
+
     const { distance, duration } = values.event;
     const eachIntervalDuration = values.intervalDuration.run + values.intervalDuration.walk;
     const totalIntervals = eachIntervalDuration > 0 ? duration / eachIntervalDuration : 0;
@@ -78,7 +89,7 @@ export default function Home({
     });
   }, [values]);
 
-  return (
+  return values ? (
     <div className="container mx-auto px-4 flex flex-wrap">
       <Head>
         <title>Walk - Run Pace calculator</title>
@@ -93,7 +104,5 @@ export default function Home({
         <Result calculations={calculations} />
       </main>
     </div>
-  );
+  ) : <div />;
 }
-
-Home.getInitialProps = ({ query }: { query: any }) => ({ query });
